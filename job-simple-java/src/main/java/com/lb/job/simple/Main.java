@@ -8,9 +8,20 @@ import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        var config = JobConfig.initialize();
-        StreamExecutionEnvironment env = new StreamExecutionEnvironmentFactory().getEnvironment(config);
-        new Task().initTask(config, env);
+        run(
+                JobConfig.initialize(),
+                new StreamExecutionEnvironmentFactory(),
+                new Task()
+        );
+    }
+
+    static void run(
+            JobConfig config,
+            StreamExecutionEnvironmentFactory envFactory,
+            Task task
+    ) throws Exception {
+        StreamExecutionEnvironment env = envFactory.getEnvironment(config);
+        task.initTask(config, env);
         env.execute();
     }
 }
